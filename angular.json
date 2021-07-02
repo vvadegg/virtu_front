@@ -1,0 +1,42 @@
+{
+  "cli": {
+    "analytics": "24b2cc53-cb2e-4a00-a3e7-23a7fc61701e"
+  },
+    "version": 1,
+    "projects": {
+      "virtuapp": {
+        "projectType": "application",
+        "root": "",
+        "sourceRoot": "src",
+        "architect": {
+          "build": {
+            "builder": "@angular-devkit/build-angular:browser",
+            "options": {
+              "outputPath": "dist/virtuapp",
+              "index": "src/index.html",
+              "main": "src/main.ts",
+              "polyfills": "src/polyfills.ts",
+              "tsConfig": "tsconfig.json",
+              "aot": true,
+              "styles": [  
+                "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                "./node_modules/bootstrap/dist/css/bootstrap.css",
+                "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+                "src/styles.css"
+              ],
+              "scripts":[
+               
+               ]
+            }
+          },
+          "serve": {
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "options": {
+              "browserTarget": "virtuapp:build"
+            }
+          }
+        }
+      }},
+    "defaultProject": "virtuapp"
+  }
+

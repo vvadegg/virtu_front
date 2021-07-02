@@ -1,0 +1,284 @@
+<!--button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDocWindow">Создать договор</button-->
+
+<a data-toggle="modal" href="#createDocWindow" class="btn btn-primary">Создать договор</a>
+
+<div class="modal fade" id="createDocWindow">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+               <!--h4 class="modal-title">Новый договор</h4-->
+          </div>
+          <div class="container"></div>
+          <div class="modal-body">
+
+            <form [formGroup]="calcForm" (ngSubmit)="submitCalc()">
+            
+              <div class="form-row alert alert-danger" [hidden]="!calcForm.errors?.range || calcForm.controls['dateStart'].untouched || calcForm.controls['dateEnd'].untouched">Дата начала действия договора должна быть ранее окончания договора</div>
+  
+              <div class="form-row">
+                  <label for="sum" class="col-sm-3 text-right">Страховая сумма</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text" class="form-control small" id="sum" name="sum" formControlName="sum">
+                  </div>
+                  
+                  <label for="dateStart" class="col-sm-2 text-right">Срок действия с</label>
+                  <div class="col-sm-2 form-group">
+                        <input type="text"
+                              class="form-control"
+                              bsDatepicker
+                              id="dateStart" name="dateStart"  formControlName="dateStart"
+                              [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }"
+                              placeholder="дд.мм.гггг" required>
+                  </div>
+  
+                  <label for="dateEnd" class="col-sm-1 text-right">по</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text"
+                      class="form-control"
+                      bsDatepicker
+                      id="dateEnd" name="dateEnd"  formControlName="dateEnd"
+                      [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }"
+                      placeholder="дд.мм.гггг" required>
+                  </div>                
+              </div>
+  
+              <div class="form-row">
+                  <label for="realtyType" class="col-sm-3 text-right">Тип недвижимости</label>
+                  <div class="col form-group" >
+                    <select                      
+                      required  
+                      formControlName="realtyType"
+                      class="form-control"
+  >                   id="realtyType">
+                      <option *ngFor="let typeName of realtyType" [value]="typeName">{{typeName}}</option>
+                    </select>
+                  </div>
+              </div>
+  
+              <div class="form-row">
+                  <label for="yearBuilding" class="col-sm-3 text-right">Год постройки</label>
+                  <div class="col form-group">
+                    <select                      
+                      required  
+                      formControlName="yearBuilding"
+                      class="form-control"
+  >                   id="yearBuilding">
+                      <option *ngFor="let year of years" [value]="year">{{year}}</option>
+                    </select>                  
+                  </div>
+              </div>
+  
+              <div class="form-row">
+                  <label for="square" class="col-sm-3 text-right">Площадь, кв.м.</label>
+                  <div class="col form-group">
+                      <input type="text" class="form-control" id="square" name="square"  formControlName="square">
+                  </div>
+              </div>
+  
+              <div class="form-row">
+                  <button type="button" class="btn btn-primary" id="calculateButton" (click)="submitCalc();" [disabled]="!calcForm.valid">Расчитать</button>
+              </div>
+            </form>
+        
+            <form>
+              <div class="form-row">
+                  <label for="calcDate" class="col-sm-3 text-right"> Дата расчета</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text" class="form-control" id="calcDate" name="calcDate" [(ngModel)]="calcResponse.calcDate" readonly="readonly">
+                  </div>
+                  <label for="bonus" class="col-sm-2 text-right">Премия</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text" class="form-control" id="bonus" name="bonus" [(ngModel)]="calcResponse.bonus" readonly="readonly">
+                  </div>
+              </div>
+            </form>
+  
+            <form [formGroup]="selectedClientForm">
+              <div class="form-row">
+                <div class="col-sm-2">
+                  <a data-toggle="modal" href="#selectClientModal" class="btn btn-primary">Выбрать</a>
+                </div>                
+  
+                <label for="fio" class="col-sm-1 text-right">ФИО</label>
+                  <div class="col-sm-6 form-group">
+                      <input type="text" class="form-control" id="fio" name="fio" readonly="readonly" formControlName="fio">
+                  </div>
+
+                  <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary" id="changeClientButton" (click)="changeClient()">Изменить</button>
+                  </div>
+              </div>
+  
+              <div class="form-row">
+                  <label for="clientBirthday" class="col-sm-3 text-right">Дата рождения</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text" class="form-control" id="clientBirthday" name="birthday" readonly="readonly"  formControlName="birthday">
+                  </div>
+  
+                  <label class="col-sm-2 text-right">Паспорт</label>
+                  <label for="clientPassSeries" class="col-sm-1 text-right">серия</label>
+                  <div class="col-sm-1 form-group">
+                      <input type="text" class="form-control" id="clientPassSeries" name="passSeries" readonly="readonly" formControlName="passSeries">
+                  </div>
+  
+                  <label for="clientPassNumber" class="col-sm-1 text-right">номер</label>
+                  <div class="col-sm-2 form-group">
+                      <input type="text" class="form-control" id="clientPassNumber" name="passNumber" readonly="readonly" formControlName="passNumber">
+                  </div>
+  
+              </div>
+              
+            </form>            
+              
+          </div>
+          <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Закрыть</a>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="selectClientModal">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Выбор клиента</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="container"></div>
+          <div class="modal-body">
+
+            <form [formGroup]="clientSearchForm" (ngSubmit)="submitClientSearch()">
+              <div class="form-row">
+                <label for="sum" class="col-sm-1 text-right">Фамилия</label>
+                <div class="col-sm-2 form-group">
+                    <input type="text" class="form-control" id="clientSearchSurName" name="surName" formControlName="surName">
+                </div>
+                
+                <label for="sum" class="col-sm-1 text-right">Имя</label>
+                <div class="col-sm-2 form-group">
+                    <input type="text" class="form-control" id="clientSearchFirstName" name="firstName" formControlName="firstName">
+                </div>
+
+                <label for="sum" class="col-sm-1 text-right">Отчество</label>
+                <div class="col-sm-2 form-group">
+                    <input type="text" class="form-control" id="clientSearchMiddleName" name="middleName" formControlName="middleName">
+                </div>
+                <div class="col-sm-2 form-group">
+                  <button type="button" class="btn btn-primary" id="clientSearchButton" (click)="submitClientSearch();">Искать</button>
+              </div>
+            </div>
+            </form>
+          </div>
+
+          <div>
+            <a data-toggle="modal" href="#clientFormModal" class="btn btn-primary">Новый</a>
+          </div>
+
+          <div class="listClient">
+
+            <table class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ФИО</th>
+                  <th scope="col">Дата рождения</th>
+                  <th scope="col">Паспортные данные</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let client of clientSearched" (dblclick)="selectClient(client);">
+                  <td>{{client.fio}}</td>
+                  <td>{{client.birthday | date : "dd.MM.yyyy"}}</td>
+                  <td>{{client.passSeries}} {{client.passNumber}}</td>
+                  <td><button (click)="selectClient(client);" class="btn btn-sm">выбрать</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Закрыть</a>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="clientFormModal">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title">Modal 3</h4>
+
+          </div>
+          <div class="container"></div>
+          <div class="modal-body">
+
+            
+            <form [formGroup]="clientForm" (ngSubmit)="clientSave()">
+
+              <input type="hidden" id="clientId" name="id" formControlName="id">
+
+              <div class="form-row">
+                <label for="clientSurName" class="col-sm-1 text-right">Фамилия</label>
+                <div class="col-sm-3 form-group">
+                    <input type="text" class="form-control" id="clientSurName" name="surName" formControlName="surName">
+                </div>
+                
+                <label for="clientFirstName" class="col-sm-1 text-right">Имя</label>
+                <div class="col-sm-3 form-group">
+                    <input type="text" class="form-control" id="clientFirstName" name="firstName" formControlName="firstName">
+                </div>
+
+                <label for="clientMiddleName" class="col-sm-1 text-right">Отчество</label>
+                <div class="col-sm-3 form-group">
+                    <input type="text" class="form-control" id="clientMiddleName" name="middleName" formControlName="middleName">
+                </div>
+            </div>
+
+            <div class="form-row">
+              <label for="clientBirthday" class="col-sm-2 text-right">Дата рождения</label>
+              <div class="col-sm-2 form-group">
+                  <input type="text"
+                  class="form-control"
+                  bsDatepicker
+                  id="clientBirthday" name="clientBirthday"  formControlName="birthday"
+                  [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY' }"
+                  placeholder="дд.мм.гггг" required>
+              </div>
+
+              <label for="clientPassSeries" class="col-sm-2 text-right">Паспорт серия</label>
+              <div class="col-sm-2 form-group">
+                  <input type="text" class="form-control" id="clientPassSeries" name="passSeries" formControlName="passSeries" placeholder="4 цифры">
+              </div>
+
+              <label for="clientPassNumber" class="col-sm-1 text-right">номер</label>
+              <div class="col-sm-2 form-group">
+                  <input type="text" class="form-control" id="clientPassNumber" name="passNumber" formControlName="passNumber" placeholder="6 цифр">
+              </div>
+            </div>
+
+            <div class="modal-footer">	<a href="#" data-dismiss="modal" class="btn">Закрыть</a>
+            <button class="btn btn-primary" (click)="clientSave();" [disabled]="!clientForm.valid">Сохранить</button>
+            </div>
+            </form>
+    
+          <!--br>	<a data-toggle="modal" href="#myModal4" class="btn btn-primary">Launch modal</a-->
+         
+
+          </div>
+      </div>
+  </div>
+</div>

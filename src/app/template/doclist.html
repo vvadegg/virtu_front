@@ -1,0 +1,29 @@
+<div class="jumbotron">
+    <h1 class="display-4">Договора страхования</h1>
+</div>
+
+<doc-form-component></doc-form-component>
+
+
+<table class="table table-hover" >
+    <thead>
+        <tr>
+            <th scope="col">Серия-номер</th>
+            <th scope="col">Дата заключения</th>
+            <th scope="col">Страхователь</th>
+            <th scope="col">Премия</th>
+            <th scope="col">Срок действия</th>
+          </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let doc of docs">
+            <td>{{doc.id}}</td>
+            <td>{{doc.added | date:'dd.MM.YYYY'}}</td>
+            <td>{{doc.client.surName}} {{doc.client.firstName}} {{doc.client.middleName}}</td>
+            <td>{{doc.bonus}}</td>
+            <td>{{doc.dateStart | date:'dd.MM.YYYY'}}-{{doc.dateEnd | date:'dd.MM.YYYY'}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
